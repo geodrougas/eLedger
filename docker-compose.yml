@@ -1,0 +1,81 @@
+version: '3.4'
+
+networks:
+  apinetwork:
+    driver: bridge
+  authservicenetwork:
+    driver: bridge
+  ledgerservicenetwork:
+    driver: bridge
+
+services:
+  electronicledger:
+    image: ${DOCKER_REGISTRY-}electronicledger
+    build:
+      context: .
+      dockerfile: ElectronicLedger/Dockerfile
+    environment:
+      DB_CONNECTION_STRING: "server=appdb; Port=3311; user id=e_ledger_user;password=e_ledger_user_password;database=e_ledger; SslMode=Preferred;"
+    ports:
+      - "4231:443"
+    depends_on:
+      - appdb
+      - authapi
+    networks:
+      - apinetwork
+      - ledgerservicenetwork
+  appdb:
+    image: mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: e_ledger_user_master_password
+      MYSQL_DATABASE: e_ledger
+      MYSQL_USER: e_ledger_user
+      MYSQL_PASSWORD: e_ledger_user_password
+      PORT: "4621"
+    volumes:
+      - appdb:/var/lib/mysql
+    ports:
+      - "3311:3306"
+    networks:
+      - ledgerservicenetwork
+  authapi:
+    image: ${DOCKER_REGISTRY-}authapi
+    build:
+      context: .
+      dockerfile: AuthApi/Dockerfile
+    environment:
+      REFRESH_TOKEN_KEY_FOLDER: /run/secrets/refresh_token_key
+    ports:
+      - "4230:443"
+    depends_on:
+      - authdb
+    networks:
+      - apinetwork
+      - authservicenetwork
+    secrets:
+      - AuthSecrets
+
+  authdb:
+    image: mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: ledger_auth_db_master_password
+      MYSQL_DATABASE: ledger_auth_db
+      MYSQL_USER: ledger_auth_user
+      MYSQL_PASSWORD: ledger_auth_password
+    volumes:
+      - authdb:/var/lib/mysql
+    ports:
+      - "3312:3306"
+    networks:
+      - authservicenetwork
+
+
+volumes:
+  appdb:
+  authdb:
+
+secrets:
+  AuthSecrets:
+    file: "C:\\Users\\GeoDrougas\\AppData\\Roaming\\Microsoft\\UserSecrets\\89e1fa0d-53ef-4bf5-b21c-bf0177575c8c"
+  LedgerSecrets:
+    file: "C:\\Users\\GeoDrougas\\AppData\\Roaming\\Microsoft\\UserSecrets\\e1584f05-1c86-45f1-aee3-718d1fd3eff1"
