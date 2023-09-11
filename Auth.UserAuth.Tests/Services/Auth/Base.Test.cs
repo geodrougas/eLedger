@@ -4,11 +4,7 @@ using Auth.UserAuth.Services;
 using Common.Interfaces.Tools;
 using Microsoft.Extensions.Localization;
 using NSubstitute;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Auth.UserAuth.Tests.Services.Auth
 {

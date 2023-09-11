@@ -1,16 +1,9 @@
 ﻿using Auth.UserAuth.Models.Aggregates;
 using Auth.UserAuth.Models.Entities;
-using Common.Interfaces.Tools;
 using Common.Models.Helper;
 using Common.Models.Helper.ResultTypes;
 using Common.Models.ValueTypes;
-using Microsoft.Extensions.Localization;
 using NSubstitute;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Auth.UserAuth.Tests.Services.Auth
 {
@@ -24,7 +17,7 @@ namespace Auth.UserAuth.Tests.Services.Auth
         public async Task ShouldReturnAuthUnitWithRefreshToken_WhenUserExistsAndRememberIsTrue()
         {
             // Arrange
-            LoginInfo loginInfo = new LoginInfo("George", "123455", "Mozilla", true);
+            LoginInfo loginInfo = new LoginInfo("George", "123455", true);
             var user = new User
             {
                 Id = Guid.NewGuid(),
@@ -33,12 +26,12 @@ namespace Auth.UserAuth.Tests.Services.Auth
             };
             var jwtToken = Guid.NewGuid().ToString();
             var refreshTokenStr = Guid.NewGuid().ToString();
-            var identityToken = new IdentityToken(loginInfo.UserName, user.Email, true, false, new List<string>());
+            var identityToken = new IdentityToken(loginInfo.UserName, user.Email, true, new List<string>());
 
             _dateTimeProvider.Now.Returns(new DateTimeOffset(2023, 8, 17, 10, 10, 10, TimeSpan.Zero));
 
-            var accessToken = new AccessToken(Guid.NewGuid(), loginInfo.Application, new Timestamp(_dateTimeProvider.Now, user.Id), _dateTimeProvider.Now.AddHours(8));
-            var refreshToken = new RefreshToken(Guid.NewGuid(), loginInfo.Application, new Timestamp(_dateTimeProvider.Now, user.Id), _dateTimeProvider.Now.AddMonths(1), false, false);
+            var accessToken = AccessToken.GenerateAccessToken(_dateTimeProvider, 8 * 60 * 60, user);
+            var refreshToken = RefreshToken.GenerateToken(_dateTimeProvider, 30 * 24 * 60 * 60, user);
 
             _userService.GetUser(loginInfo.UserName).Returns(user);
             _userService.Authenticate(user, loginInfo.Password).Returns(ResultHelper.NoContent<Unit>());
@@ -62,7 +55,7 @@ namespace Auth.UserAuth.Tests.Services.Auth
         public async Task ShouldReturnAuthUnitWithoutRefreshToken_WhenUserExistsAndRememberIsFalse()
         {
             // Arrange
-            LoginInfo loginInfo = new LoginInfo("George", "123455", "Mozilla", false);
+            LoginInfo loginInfo = new LoginInfo("George", "123455", false);
             var user = new User
             {
                 Id = Guid.NewGuid(),
@@ -71,12 +64,12 @@ namespace Auth.UserAuth.Tests.Services.Auth
             };
             var jwtToken = Guid.NewGuid().ToString();
             var refreshTokenStr = Guid.NewGuid().ToString();
-            var identityToken = new IdentityToken(loginInfo.UserName, user.Email, true, false, new List<string>());
+            var identityToken = new IdentityToken(loginInfo.UserName, user.Email, true, new List<string>());
 
             _dateTimeProvider.Now.Returns(new DateTimeOffset(2023, 8, 17, 10, 10, 10, TimeSpan.Zero));
 
-            var accessToken = new AccessToken(Guid.NewGuid(), loginInfo.Application, new Timestamp(_dateTimeProvider.Now, user.Id), _dateTimeProvider.Now.AddHours(8));
-            var refreshToken = new RefreshToken(Guid.NewGuid(), loginInfo.Application, new Timestamp(_dateTimeProvider.Now, user.Id), _dateTimeProvider.Now.AddMonths(1), false, false);
+            var accessToken = AccessToken.GenerateAccessToken(_dateTimeProvider, 8 * 60 * 60, user);
+            var refreshToken = RefreshToken.GenerateToken(_dateTimeProvider, 30 * 24 * 60 * 60, user);
 
             _userService.GetUser(loginInfo.UserName).Returns(user);
             _userService.Authenticate(user, loginInfo.Password).Returns(ResultHelper.NoContent<Unit>());
@@ -100,7 +93,7 @@ namespace Auth.UserAuth.Tests.Services.Auth
         public async Task ShouldReturnNotFound_WhenUserDoesNotExist()
         {
             // Arrange
-            LoginInfo loginInfo = new LoginInfo("George", "123455", "Mozilla", false);
+            LoginInfo loginInfo = new LoginInfo("George", "123455", false);
             
             _userService.GetUser(loginInfo.UserName).Returns(ResultHelper.NotFound<User>());
 
@@ -116,7 +109,7 @@ namespace Auth.UserAuth.Tests.Services.Auth
         public async Task ShouldReturnNotAuthorized_WhenUsersPasswordIsIncorrect()
         {
             // Arrange
-            LoginInfo loginInfo = new LoginInfo("George", "123455", "Mozilla", false);
+            LoginInfo loginInfo = new LoginInfo("George", "123455", false);
             var user = new User
             {
                 Id = Guid.NewGuid(),

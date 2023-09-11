@@ -1,0 +1,63 @@
+# This is a generated file. Not intended for manual editing.
+version: "3.4"
+services:
+  authapi:
+    build:
+      context: "/home/coldhammer/Documents/Projects/DotNet/eLedger"
+      dockerfile: "AuthApi/Dockerfile"
+      target: "base"
+    command: []
+    entrypoint:
+    - "/riderDebugger/linux-x64/dotnet/dotnet"
+    - "/riderDebugger/JetBrains.Debugger.Worker.exe"
+    - "--mode=server"
+    - "--frontend-port=57100"
+    - "--backend-port=57300"
+    environment:
+      DOTNET_USE_POLLING_FILE_WATCHER: "true"
+      NUGET_PACKAGES: "/root/.nuget/packages"
+      NUGET_FALLBACK_PACKAGES: "/root/.nuget/packages"
+      RIDER_DEBUGGER_LOG_DIR: "/riderLogs"
+      RESHARPER_LOG_CONF: "/riderLogsConf/backend-log.xml"
+    image: "authapi:dev"
+    ports:
+    - "127.0.0.1:57020:57100"
+    - "127.0.0.1:57220:57300"
+    volumes:
+    - "/root/.nuget/packages:/root/.nuget/fallbackpackages"
+    - "/home/coldhammer/Documents/Projects/DotNet/eLedger/AuthApi:/app:rw"
+    - "/home/coldhammer/Documents/Projects/DotNet/eLedger:/src:rw"
+    - "/root/.local/share/JetBrains/RiderRemoteDebugger/2023.2.1/Linux64:/riderDebugger"
+    - "/home/coldhammer/.local/share/JetBrains/Toolbox/apps/rider/bin:/riderLogsConf"
+    - "/root/.cache/JetBrains/Rider2023.2/log/DebuggerWorker/JetBrains.Debugger.Worker.2023_9_11_22_24_40:/riderLogs:rw"
+    working_dir: "/app"
+  electronicledger:
+    build:
+      context: "/home/coldhammer/Documents/Projects/DotNet/eLedger"
+      dockerfile: "ElectronicLedger/Dockerfile"
+      target: "base"
+    command: []
+    entrypoint:
+    - "/riderDebugger/linux-x64/dotnet/dotnet"
+    - "/riderDebugger/JetBrains.Debugger.Worker.exe"
+    - "--mode=server"
+    - "--frontend-port=57100"
+    - "--backend-port=57300"
+    environment:
+      DOTNET_USE_POLLING_FILE_WATCHER: "true"
+      NUGET_PACKAGES: "/root/.nuget/packages"
+      NUGET_FALLBACK_PACKAGES: "/root/.nuget/packages"
+      RIDER_DEBUGGER_LOG_DIR: "/riderLogs"
+      RESHARPER_LOG_CONF: "/riderLogsConf/backend-log.xml"
+    image: "electronicledger:dev"
+    ports:
+    - "127.0.0.1:57021:57100"
+    - "127.0.0.1:57221:57300"
+    volumes:
+    - "/root/.nuget/packages:/root/.nuget/fallbackpackages"
+    - "/home/coldhammer/Documents/Projects/DotNet/eLedger/ElectronicLedger:/app:rw"
+    - "/home/coldhammer/Documents/Projects/DotNet/eLedger:/src:rw"
+    - "/root/.local/share/JetBrains/RiderRemoteDebugger/2023.2.1/Linux64:/riderDebugger"
+    - "/home/coldhammer/.local/share/JetBrains/Toolbox/apps/rider/bin:/riderLogsConf"
+    - "/root/.cache/JetBrains/Rider2023.2/log/DebuggerWorker/JetBrains.Debugger.Worker.2023_9_11_22_24_40:/riderLogs:rw"
+    working_dir: "/app"

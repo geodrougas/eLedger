@@ -45,7 +45,7 @@ namespace Auth.UserAuth.Services
                 if (authenticationResult.IsFailure)
                     return authenticationResult.Convert();
 
-                var result = await GenerateAuthenticationUnit(user, loginInfo.Application, loginInfo.IPAddress, loginInfo.RememberMe);
+                var result = await GenerateAuthenticationUnit(user, loginInfo.RememberMe);
 
                 await unitOfWork.SaveAsync();
 
@@ -103,7 +103,7 @@ namespace Auth.UserAuth.Services
                 if (user == null)
                     return userResult.Convert();
 
-                ObjectResult<AuthenticationUnit> authenticationResult = await GenerateAuthenticationUnit(user, refreshToken.Application, refreshToken.IPAddress, true);
+                ObjectResult<AuthenticationUnit> authenticationResult = await GenerateAuthenticationUnit(user, true);
 
                 await unitOfWork.SaveAsync();
 
@@ -116,9 +116,9 @@ namespace Auth.UserAuth.Services
         }
 
         #region private
-        private async Task<ObjectResult<string>> GenerateRefreshToken(User user, string application, string ipAddress)
+        private async Task<ObjectResult<string>> GenerateRefreshToken(User user)
         {
-            var refreshTokenResult = await _refreshTokenService.GenerateRefreshToken(user, application, ipAddress);
+            var refreshTokenResult = await _refreshTokenService.GenerateRefreshToken(user);
 
             RefreshToken? refreshToken = refreshTokenResult;
             if (refreshToken == null)
@@ -152,7 +152,7 @@ namespace Auth.UserAuth.Services
             return user;
         }
 
-        private async Task<ObjectResult<AuthenticationUnit>> GenerateAuthenticationUnit(User user, string application, string ipAddress, bool rememberMe)
+        private async Task<ObjectResult<AuthenticationUnit>> GenerateAuthenticationUnit(User user, bool rememberMe)
         {
             var identityTokenResult = await _userService.GenerateIdentityToken(user);
 
@@ -170,7 +170,7 @@ namespace Auth.UserAuth.Services
             string? refreshToken = null;
             if (rememberMe)
             {
-                var refreshTokenResult = await GenerateRefreshToken(user, application, ipAddress);
+                var refreshTokenResult = await GenerateRefreshToken(user);
 
                 refreshToken = refreshTokenResult;
                 if (refreshToken == null)

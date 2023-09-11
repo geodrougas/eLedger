@@ -22,7 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Auth.Infrastructure\Auth.Infrastructure.csproj" />
-    <ProjectReference Include="..\Common\Common.csproj" />
+    <ProjectReference Include="..\UserAuth\Auth.UserAuth.csproj" />
   </ItemGroup>
 
 </Project>

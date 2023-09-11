@@ -1,18 +1,8 @@
-﻿using Auth.Base.Models;
-using Auth.UserAuth.Interfaces.Services;
-using Auth.UserAuth.Models;
+﻿using Auth.UserAuth.Interfaces.Services;
 using Auth.UserAuth.Models.Entities;
 using Auth.UserAuth.Models.Entities.Options;
 using Common.Interfaces.Tools;
 using Common.Models.Helper.ResultTypes;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.JsonWebTokens;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Auth.UserAuth.Services
 {
@@ -34,7 +24,7 @@ namespace Auth.UserAuth.Services
 
         public async Task<ObjectResult<RefreshToken>> GenerateRefreshToken(User user)
         {
-            return RefreshToken.GenerateToken(_dateTimeProvider, _refreshTokenOptions.LifetimeDuration, user, application, ipAddress);
+            return RefreshToken.GenerateToken(_dateTimeProvider, _refreshTokenOptions.LifetimeDuration, user);
         }
 
         public Task<string> GetUserName(RefreshToken body)

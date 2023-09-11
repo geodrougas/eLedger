@@ -12,7 +12,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Auth\Auth.User\Auth.UserAuth.csproj" />
+    <ProjectReference Include="..\Auth.Base\Auth.Base.csproj" />
+    <ProjectReference Include="..\Common\Common.csproj" />
+    <ProjectReference Include="..\UserAuth\Auth.UserAuth.csproj" />
   </ItemGroup>
 
 </Project>

@@ -39,11 +39,8 @@ builder.Services.AddSingleton(new JwtBearerOptions
 {
     
 });
-builder.Services.AddSingleton(new JwtTokenOptions(
-    EncryptionKeyForPrivateKey: configuration["ACCESS_TOKEN_LIFETIME"] ?? throw new NullReferenceException("Missing Encryption Key For JwtToken"),
-    LifetimeDuration: configuration["ACCESS_TOKEN_LIFETIME"].ToLong() ?? 60 * 60 * 8
-));
-builder.Services.AddSingleton(new RefreshTokenOptions( LifetimeDuration: configuration["REFRESH_TOKEN_LIFETIME"].ToLong() ?? 60 * 60 * 24 * 7));
+builder.Services.AddSingleton(JwtTokenOptions.GenerateOptions(configuration));
+builder.Services.AddSingleton(RefreshTokenOptions.GenerateOptions(configuration));
 
 var app = builder.Build();
 

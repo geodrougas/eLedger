@@ -24,7 +24,7 @@ namespace Auth.UserAuth.Tools
 
         public string CreateJwt(string token)
         {
-            
+            throw new Exception();
         }
     }
 }

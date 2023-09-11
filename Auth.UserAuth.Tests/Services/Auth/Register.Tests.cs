@@ -15,7 +15,7 @@ namespace Auth.UserAuth.Tests.Services.Auth
         public async Task IfCreateUserFails_ShouldNotContinue()
         {
             _dateTimeProvider.Now.Returns(new DateTimeOffset(2023, 8, 18, 20, 01, 00, TimeSpan.Zero));
-            var registrationForm = new RegistrationForm("gsphere", "", "", "gsphere@example.com", _dateTimeProvider.Now.AddYears(-28));
+            var registrationForm = new RegistrationForm("gsphere", "", "", "gsphere@example.com");
 
             _userService.CreateUser(registrationForm).Returns(ResultHelper.BadRequest<User>());
             

@@ -44,7 +44,11 @@ services:
       context: .
       dockerfile: AuthApi/Dockerfile
     environment:
-      REFRESH_TOKEN_KEY_FOLDER: /run/secrets/refresh_token_key
+      DB_CONNECTION_STRING: "server=authdb; Port=3312; user id=ledger_auth_user;password=ledger_auth_password;database=ledger_auth_db; SslMode=Preferred;"
+      ACCESS_TOKEN_LIFETIME: 28800
+      ACCESS_TOKEN_CERTIFICATE_PATH: /run/secrets/AuthSecrets/AccessTokenAsymCertificate.pem
+      REFRESH_TOKEN_LIFETIME: 2419200
+      REFRESH_TOKEN_KEY_PATH: /run/secrets/AuthSecrets/RefreshTokenSym.key
     ports:
       - "4230:443"
     depends_on:
@@ -76,6 +80,6 @@ volumes:
 
 secrets:
   AuthSecrets:
-    file: "C:\\Users\\GeoDrougas\\AppData\\Roaming\\Microsoft\\UserSecrets\\89e1fa0d-53ef-4bf5-b21c-bf0177575c8c"
+    file: "/home/coldhammer/Documents/Projects/ProjectTestSecrets/AuthSecrets"
   LedgerSecrets:
-    file: "C:\\Users\\GeoDrougas\\AppData\\Roaming\\Microsoft\\UserSecrets\\e1584f05-1c86-45f1-aee3-718d1fd3eff1"
+    file: "/home/coldhammer/Documents/Projects/ProjectTestSecrets/LedgerSecrets"
