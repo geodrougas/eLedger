@@ -19,7 +19,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Infrastructure", "App.I
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Auth.Infrastructure", "Auth.Infrastructure\Auth.Infrastructure.csproj", "{943E1685-FD69-4B77-8EC1-CDB890A94253}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Auth.UserAuth", "Auth\Auth.User\Auth.UserAuth.csproj", "{90728F2F-DB0C-4789-95A8-EB948B4E0BCB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Auth.UserAuth", "UserAuth\Auth.UserAuth.csproj", "{90728F2F-DB0C-4789-95A8-EB948B4E0BCB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Auth.Base", "Auth.Base\Auth.Base.csproj", "{D0C4FE90-E193-4708-B791-2F9A987EB9C7}"
 EndProject
@@ -37,7 +37,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{18059CE1
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Source", "Source", "{D34ED4E6-C867-411A-B24C-38013EA5E7A8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Auth.UserAuth.Tests", "..\Auth.UserAuth.Tests\Auth.UserAuth.Tests.csproj", "{8B602DE2-7C03-4702-BFAC-44078D78D056}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Auth.UserAuth.Tests", "Auth.UserAuth.Tests\Auth.UserAuth.Tests.csproj", "{8B602DE2-7C03-4702-BFAC-44078D78D056}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
